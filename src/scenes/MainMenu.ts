@@ -13,20 +13,38 @@ export class MainMenu extends Scene
 
     create ()
     {
-        this.background = this.add.image(512, 384, 'background');
+        this.add.text(
+            this.game.config.width as number / 2, 
+            this.game.config.height as number / 2, 
+            "Pong Ping", 
+            {
+                fontSize: 80, 
+                color: "#000", 
+                backgroundColor: "#20c20e"} 
+            ).setOrigin(0.5,0.5)
 
-        this.logo = this.add.image(512, 300, 'logo');
+        const start_text = this.add.text(
+            this.game.config.width as number / 2, 
+            this.game.config.height as number / 2 + 60, 
+            "Press to Start",
+            {
+                fontSize: 30,
+                color: "#20c20e"
+            }
+        ).setOrigin(0.5,0.5)
 
-        this.title = this.add.text(512, 460, 'Main Menu', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center'
-        }).setOrigin(0.5);
-
-        this.input.once('pointerdown', () => {
-
+        start_text.setInteractive()
+        start_text.on('pointerdown', () => {
             this.scene.start('Game');
+        })
 
-        });
+        start_text.on('pointerover', () => {
+            start_text.setTintFill(0x20c20e,0x20c20e,0xffffff,0xffffff)
+        })
+
+        start_text.on('pointerout', () => {
+            start_text.setTintFill(0x20c20e,0x20c20e,0x20c20e,0x20c20e)
+        })
+
     }
 }
