@@ -12,7 +12,7 @@ export default defineConfig({
         },
     },
     server: {
-        host: TextTrackCueList,
+        host: false,
         port: 8080
     }
 });

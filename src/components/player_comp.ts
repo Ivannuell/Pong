@@ -25,13 +25,13 @@ export default class player_comp extends Phaser.Physics.Arcade.Image implements 
     }
 
     followBall() {
-        this.y_follow = this.ball.body!.y - this.body!.height / 2;
+        this.y_follow = this.ball.body!.y - this.body!.height / 2.5;
 
         if (this.y_follow >= this.body!.y) {
             if(this.body!.y / 2 <= 0) this.setVelocityY(0)
-                this.setVelocityY(400)
+                this.setVelocityY(500)
                 this.setAccelerationY(2000)
-                if(this.body?.velocity.y! > 500){
+                if(this.body?.velocity.y! > 700){
                     this.setAccelerationY(0)
                 }
             // this.setVelocityY(200)
@@ -41,15 +41,24 @@ export default class player_comp extends Phaser.Physics.Arcade.Image implements 
             // this.setVelocityY(100)
         } else if (this.y_follow <= this.body!.y) {
             if(this.body!.y / 2 >= this.config.gameconf.height + 100) this.setVelocity(0)
-                this.setVelocityY(-400)
+                this.setVelocityY(-500)
                 this.setAccelerationY(-2000)
-                if(this.body?.velocity.y! <= -500){
+                if(this.body?.velocity.y! <= -700){
                     this.setAccelerationY(0)
                 }
             // this.setVelocityY(-200)
             // this.setAccelerationY(-2000);
             // this.setMaxVelocity(0, -500);
         }
+
+
+        const debug_line = this.scene.add.graphics()
+
+        debug_line.lineStyle(2, 0xff0000)
+        debug_line.beginPath()
+        debug_line.moveTo(this.ball.body!.x, 0);
+        debug_line.lineTo(this.ball.body!.x, this.ball.body!.y);
+        debug_line.strokePath()
     }
 
 

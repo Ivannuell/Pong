@@ -23,22 +23,26 @@ export class Game extends Scene {
         super('Game');
         this.config = sharedConfig.getInstance();
     }
-    
+
     preload() {
         this.load.image('player', '/assets/box.png')
         this.load.image('ball', '/assets/Ball.png')
+        this.load.audio('ball_1', '/assets/sounds/ball_hit_1.mp3')
+        this.load.audio('ball_2', '/assets/sounds/ball_hit_2.mp3')
+        this.load.audio('wall_1', '/assets/sounds/wall_hit_1.mp3')
+        this.load.audio('wall_2', '/assets/sounds/wall_hit_2.mp3')
     }
     create() {
         console.log(this.config.gameconf.pvp);
-        
+
         this.board = this.createBoardGraphics();
         // const ball: Phaser.Physics.Arcade.Image = this.createBall()
         this.createBall();
-        
-        if(this.config.gameconf.pvp){   
+
+        if (this.config.gameconf.pvp) {
             this.player_1 = new player_person(this, this.config.paddle.side.LEFT, this.config.gameconf.center.height, 'player', this.config.controls_p1);
             this.player_1.createPaddle();
-            
+
             this.player_2 = new player_person(this, this.config.paddle.side.RIGHT, this.config.gameconf.center.height, 'player', this.config.controls_p2);
             this.player_2.createPaddle();
             this.physics.add.collider(this.ball, [this.player_1, this.player_2])
@@ -50,21 +54,33 @@ export class Game extends Scene {
             this.player_comp = new player_computer(this, this.config.paddle.side.RIGHT, this.config.gameconf.center.height, 'player', this.ball);
             this.player_comp.createPaddle();
 
-            this.physics.add.collider(this.ball, [this.player_1, this.player_comp])
+            this.physics.add.collider(this.ball, [this.player_1, this.player_comp], () => {
+                this.sound.play('ball_2')
+            })
+            
         }
-        
+
         this.physics.world.setBoundsCollision(true, true, true, true);
         this.countdown();
     }
-    
+
     update() {
         this.gameLogic();
-        
+        this.boundSound();
+
         this.player_1.controls();
         if (this.config.gameconf.pvp) this.player_2.controls();
         else this.player_comp.followBall();
         this.config.openMenu(this);
-        
+
+    }
+
+    boundSound() {
+        if(this.ball.body!.y <= 10){
+            this.sound.play('wall_1')
+        } else if (this.ball.body!.y >= this.config.gameconf.height - 30) {
+            this.sound.play('wall_1')
+        }
     }
 
     countdown() {
@@ -110,8 +126,8 @@ export class Game extends Scene {
      * @return {void} This function does not return anything.
      */
     gameLogic(): void {
-        if(this.config.score.p1 === 5 || this.config.score.p2 === 5) {
-            this.config.score = {p1: 0, p2: 0};
+        if (this.config.score.p1 === 5 || this.config.score.p2 === 5) {
+            this.config.score = { p1: 0, p2: 0 };
             this.scene.start('GameOver');
         }
 
