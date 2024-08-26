@@ -46,9 +46,6 @@ export default class player_comp extends Phaser.Physics.Arcade.Image implements 
                 if(this.body?.velocity.y! <= -700){
                     this.setAccelerationY(0)
                 }
-            // this.setVelocityY(-200)
-            // this.setAccelerationY(-2000);
-            // this.setMaxVelocity(0, -500);
         }
 
 
