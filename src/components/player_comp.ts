@@ -48,14 +48,6 @@ export default class player_comp extends Phaser.Physics.Arcade.Image implements 
                 }
         }
 
-
-        const debug_line = this.scene.add.graphics()
-
-        debug_line.lineStyle(2, 0xff0000)
-        debug_line.beginPath()
-        debug_line.moveTo(this.ball.body!.x, 0);
-        debug_line.lineTo(this.ball.body!.x, this.ball.body!.y);
-        debug_line.strokePath()
     }
 
 
